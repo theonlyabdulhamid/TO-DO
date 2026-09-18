@@ -13,7 +13,7 @@ def main():
 1. Add task
 2. View pending tasks
 3. View completed tasks
-4. Complete task
+4. Mark tasks
 5. View all tasks
 6. Edit task
 7. Delete task
@@ -31,7 +31,7 @@ def main():
             elif option == 3:
                 view_completed()
             elif option == 4:
-                complete_task(tasks)
+                mark_task(tasks)
             elif option == 5:
                 view_tasks(tasks)
             elif option == 6:
@@ -43,6 +43,8 @@ def main():
             elif option == 9:
                 print("Goodbye!")
                 break
+            else:
+                print("Please choose a valid option.")
 
         except ValueError:
             print("Enter a valid option")
@@ -137,9 +139,45 @@ def delete_task():
                 print("Please input a valid task ID.")
 
 
+def pending_task(tasks):
+    if tasks:
+        while True:
+            view_tasks(tasks)
+            try:
+                task_id = int(input("Please input task id: "))
+                if task_id < 1 or task_id > len(tasks):
+                    print("Please input a valid task ID.")
+                else:
+                    tasks[task_id - 1]["completed"] = False
+                    print(f'Task "{tasks[task_id-1]["task_name"]}" marked as pending')
+                    break
+            except ValueError:
+                print("Please input a valid task ID.")
+    else:
+        print("No tasks found.")
+
+
+def mark_task(tasks):
+    print("1. Mark as completed\n2. Mark as pending")
+    while True:
+        try:
+            choice = int(input("Choose option: "))
+            if choice== 1:
+                complete_task(tasks)
+                break
+            elif choice== 2:
+                pending_task(tasks)
+                break
+            else:
+                print("Please choose option 1 or 2")
+        except ValueError:
+            print("Please choose option 1 or 2")
+
+
 def edit_task():
     print("Enter task ID to edit: ")
     view_tasks(tasks)
+    pending_task(tasks)
     while True:
         try:
             task_id = int(input("please enter task id to edit"))
@@ -222,21 +260,24 @@ def view_completed():
         print("please add a task first")
 
 
-def save_task(): 
+def save_task():
     try:
-        with open("tasks.json","w")as file:
-            json.dump(tasks,file)
+        with open("tasks.json", "w") as file:
+            json.dump(tasks, file)
             print("Saved successfully")
     except FileNotFoundError:
         print("File 'tasks.json'not found")
     load_task()
 
+
 def load_task():
     try:
-        with open("tasks.json","r")as file:
+        with open("tasks.json", "r") as file:
             tasks.clear()
             tasks.extend(json.load(file))
     except FileNotFoundError:
         tasks.clear()
+
+
 load_task()
 main()
