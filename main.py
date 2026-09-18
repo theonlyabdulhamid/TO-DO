@@ -44,7 +44,7 @@ def main():
                 print("Goodbye!")
                 break
             else:
-                print("Please choose a valid option.")
+                print("Enter a valid option")
 
         except ValueError:
             print("Enter a valid option")
@@ -128,7 +128,7 @@ def delete_task():
             try:
                 task_id = int(input("Please input the task ID you want to delete: "))
                 if task_id < 1 or task_id > len(tasks):
-                    print("Enter a valid task id")
+                    print("Enter a valid task ID")
                 else:
                     tasks.pop(task_id - 1)
                     print(f"Task deleted")
@@ -144,15 +144,15 @@ def pending_task(tasks):
         while True:
             view_tasks(tasks)
             try:
-                task_id = int(input("Please input task id: "))
+                task_id = int(input("Enter task ID: "))
                 if task_id < 1 or task_id > len(tasks):
                     print("Please input a valid task ID.")
                 else:
                     tasks[task_id - 1]["completed"] = False
-                    print(f'Task "{tasks[task_id-1]["task_name"]}" marked as pending')
+                    print(f'Task "{tasks[task_id-1]["task_name"].capitalize()}" marked as pending')
                     break
             except ValueError:
-                print("Please input a valid task ID.")
+                print("Enter a valid task ID.")
     else:
         print("No tasks found.")
 
@@ -169,15 +169,14 @@ def mark_task(tasks):
                 pending_task(tasks)
                 break
             else:
-                print("Please choose option 1 or 2")
+                print("Please Enter option 1 or 2")
         except ValueError:
-            print("Please choose option 1 or 2")
+            print("Please Enter option 1 or 2")
 
 
 def edit_task():
     print("Enter task ID to edit: ")
     view_tasks(tasks)
-    pending_task(tasks)
     while True:
         try:
             task_id = int(input("please enter task id to edit"))
@@ -206,13 +205,13 @@ def edit_task():
                 break
             elif option == 2:
                 while True:
-                    x = input("update task priority: ").strip().capitalize()
+                    x = input("Update task priority: ").strip().capitalize()
                     if x.lower() in ["low", "high", "medium"]:
                         tasks[task_id - 1]["priority"] = x
                         print("Priority updated successfully!")
                         break
                     else:
-                        print("priority must be low,medium or high")
+                        print("Priority must be low,medium or high")
 
                 break
             elif option == 3:
@@ -257,7 +256,7 @@ def view_completed():
         else:
             print("You dont have any completed tasks!")
     else:
-        print("please add a task first")
+        print("Please add a task first")
 
 
 def save_task():
